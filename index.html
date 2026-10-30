@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="nn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RunGoal</title>
+
+    <meta name="theme-color" content="#6caa83">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="RunGoal">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="rungoal-icon-192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <header class="topbar">
+            <div class="logo">
+                <div class="logo-mark">R</div>
+                <div>
+                    <h1>RunGoal</h1>
+                    <p>Din personlege løpeplan</p>
+                </div>
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <button class="nav-button active" data-page="dashboard">Oversikt</button>
+            <button class="nav-button" data-page="log">Registrer tur</button>
+            <button class="nav-button" data-page="plan">Treningsplan</button>
+            <button class="nav-button" data-page="history">Historikk</button>
+        </nav>
+
+        <main>
+
+            <!-- OVERSIKT -->
+            <section id="dashboard" class="page active">
+
+                <div class="welcome">
+                    <p class="eyebrow">HALLO, LØPAR!</p>
+                    <h2>Små steg gir store resultat.</h2>
+                    <p>Hald oversikt over løpeturane dine og jobb mot målet ditt.</p>
+                </div>
+
+                <div class="section-heading">
+                    <h2>Din statistikk</h2>
+                    <span class="small-note">Totalt</span>
+                </div>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <span class="stat-label">Denne veka</span>
+                        <strong id="weekDistance">0 km</strong>
+                        <span class="stat-description">Sprunge distanse</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Løpeturar</span>
+                        <strong id="runCount">0</strong>
+                        <span class="stat-description">Registrerte turar</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Total distanse</span>
+                        <strong id="totalDistance">0 km</strong>
+                        <span class="stat-description">Alle løpeturane</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Beste tempo</span>
+                        <strong id="bestPace">–</strong>
+                        <span class="stat-description">Minutt per kilometer</span>
+                    </div>
+
+                </div>
+
+                <div class="card progress-card">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">MÅLET DITT</p>
+                            <h2 id="goalTitle">2,5 km på 15 min</h2>
+                        </div>
+                        <span class="goal-tag">Ditt mål</span>
+                    </div>
+
+                    <div class="progress-info">
+                        <span id="progressDescription">Lengste tur: 0 km</span>
+                        <strong id="progressPercent">0 %</strong>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="progressBar" class="progress-fill"></div>
+                    </div>
+
+                    <div class="goal-details">
+                        <div>
+                            <span>Fart du siktar mot</span>
+                            <strong id="goalPace">6:00 min/km</strong>
+                        </div>
+                        <div>
+                            <span>Tid igjen</span>
+                            <strong id="weeksLeft">12 veker</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card next-run-card">
+                    <p class="eyebrow">NESTE STEG</p>
+                    <h2>Neste løpetur</h2>
+                    <p id="nextRunText">Registrer ein løpetur for å få forslag til neste økt.</p>
+                    <button class="primary-button" data-open-page="log">Registrer løpetur</button>
+                </div>
+
+                <div class="card settings-card">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">INNSTILLINGAR</p>
+                            <h2>Målet mitt</h2>
+                        </div>
+                    </div>
+
+                    <form id="goalForm" class="goal-form">
+
+                        <label>
+                            Måldistanse (km)
+                            <input type="number" id="targetDistance" min="0.1" step="0.1" required>
+                        </label>
+
+                        <label>
+                            Måltid (minutt)
+                            <input type="number" id="targetMinutes" min="1" step="0.5" required>
+                        </label>
+
+                        <label>
+                            Veker til målet
+                            <input type="number" id="goalWeeks" min="1" max="52" required>
+                        </label>
+
+                        <label>
+                            Distanse per veke (km)
+                            <input type="number" id="weeklyDistance" min="0" step="0.5" required>
+                        </label>
+
+                        <label>
+                            Løpedagar per veke
+                            <select id="runningDays">
+                                <option value="1">1 dag</option>
+                                <option value="2">2 dagar</option>
+                                <option value="3">3 dagar</option>
+                                <option value="4">4 dagar</option>
+                                <option value="5">5 dagar</option>
+                                <option value="6">6 dagar</option>
+                                <option value="7">7 dagar</option>
+                            </select>
+                        </label>
+
+                        <button type="submit" class="primary-button">Lagre målet</button>
+
+                    </form>
+                </div>
+
+            </section>
+
+
+            <!-- REGISTRER LØPETUR -->
+            <section id="log" class="page">
+
+                <div class="page-heading">
+                    <p class="eyebrow">NY LØPETUR</p>
+                    <h2>Registrer løpeturen din</h2>
+                    <p>Start stoppeklokka når du byrjar å springe. Lagre turen når du er ferdig.</p>
+                </div>
+
+                <div class="card stopwatch-card">
+
+                    <p class="eyebrow">STOPPEKLOKKE</p>
+
+                    <div id="stopwatch" class="stopwatch">00:00</div>
+
+                    <div class="timer-buttons">
+                        <button id="startTimer" class="primary-button">Start</button>
+                        <button id="pauseTimer" class="secondary-button" disabled>Pause</button>
+                        <button id="resetTimer" class="secondary-button">Nullstill</button>
+                    </div>
+
+                </div>
+
+                <form id="runForm" class="card run-form">
+
+                    <h2>Informasjon om turen</h2>
+
+                    <label>
+                        Dato
+                        <input type="date" id="runDate" required>
+                    </label>
+
+                    <label>
+                        Kor langt sprang du? (km)
+                        <input type="number" id="runDistance" min="0.1" step="0.01"
+                               placeholder="Til dømes 2.5" required>
+                    </label>
+
+                    <label>
+                        Korleis kjendes turen?
+                        <select id="runFeeling" required>
+                            <option value="easy">Lett og behageleg</option>
+                            <option value="normal">Passe tung</option>
+                            <option value="hard">Tung</option>
+                            <option value="pain">Eg hadde smerter</option>
+                        </select>
+                    </label>
+
+                    <p class="form-hint">
+                        Vel det som passar best. Dette hjelper RunGoal med å foreslå ei passeleg neste økt.
+                    </p>
+
+                    <button type="submit" class="primary-button full-button">Lagre løpetur</button>
+
+                </form>
+
+            </section>
+
+
+            <!-- TRENINGSPLAN -->
+            <section id="plan" class="page">
+
+                <div class="page-heading">
+                    <p class="eyebrow">PLANEN DIN</p>
+                    <h2>Treningsplan</h2>
+                    <p>Bruk planen som eit forslag. Ta kviledagar når kroppen treng det.</p>
+                </div>
+
+                <div class="card plan-summary">
+                    <p class="eyebrow">VEKEPLAN</p>
+                    <h2>Steg for steg</h2>
+                    <p id="planSummary">Planen din blir vist her.</p>
+                </div>
+
+                <div id="trainingSessions" class="session-list"></div>
+
+                <div class="card advice-card">
+                    <h3>Hugs dette</h3>
+                    <p>Rolige løpeturar og kvile er ein viktig del av treninga. Du treng ikkje springe fort kvar gong.</p>
+                    <p>Ved smerter bør du ta pause frå løpinga. Snakk med ein føresett eller helsepersonell dersom smertene held fram.</p>
+                </div>
+
+            </section>
+
+
+            <!-- HISTORIKK -->
+            <section id="history" class="page">
+
+                <div class="page-heading">
+                    <p class="eyebrow">TRENINGSLOGG</p>
+                    <h2>Historikk</h2>
+                    <p>Sjå tilbake på løpeturane dine og følg utviklinga.</p>
+                </div>
+
+                <div class="card chart-card">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">UTVIKLING</p>
+                            <h2>Distanse per veke</h2>
+                        </div>
+                    </div>
+
+                    <div id="weeklyChart" class="weekly-chart"></div>
+                </div>
+
+                <div class="card calendar-card">
+                    <div class="calendar-header">
+                        <button id="previousMonth" class="calendar-arrow" aria-label="Førre månad">‹</button>
+                        <h2 id="calendarMonth"></h2>
+                        <button id="nextMonth" class="calendar-arrow" aria-label="Neste månad">›</button>
+                    </div>
+
+                    <div class="calendar-grid" id="calendarGrid"></div>
+
+                    <p class="calendar-hint">Grøn prikk betyr at du har registrert ein løpetur.</p>
+                </div>
+
+                <div class="card selected-day-card">
+                    <h2 id="selectedDateTitle">Løpeturar</h2>
+                    <div id="selectedDayRuns"></div>
+                </div>
+
+                <div class="history-heading">
+                    <h2>Alle løpeturane</h2>
+                    <button id="exportData" class="secondary-button">Eksporter data</button>
+                </div>
+
+                <div id="runHistory" class="history-list"></div>
+
+            </section>
+
+        </main>
+
+        <footer>
+            <p>RunGoal · Ein løpetur om gongen</p>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
